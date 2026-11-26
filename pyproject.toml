@@ -1,0 +1,81 @@
+[project]
+name = "swx"
+version = "0.1.0"
+description = "Tracing the Formation of Super Weights Through Neural Network Artifacts and Dynamics (NeurIPS 2026)"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+
+dependencies = [
+    # Core numerics + modelling
+    "torch>=2.4",
+    "transformers>=4.44",
+    "accelerate>=0.34",
+    "safetensors>=0.4",
+    "numpy>=1.26",
+    "scipy>=1.11",
+
+    # Datasets
+    "datasets>=2.20",
+
+    # Output formatting and plotting
+    "rich>=13.7",
+    "tqdm>=4.66",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+# A genuine end-user extra (`uv sync --extra plots` / `pip install swx[plots]`).
+plots = ["matplotlib>=3.8"]
+
+[dependency-groups]
+# Dev tooling, via PEP 735 dependency groups rather than optional-dependencies:
+# groups install with a bare `uv sync` (no --group/--extra flag needed), which
+# is what you want for "the test suite must be runnable after checkout".
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+swx = "swx.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/swx"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+# -----------------------------------------------------------------------------
+# CUDA torch on Windows/Linux.
+# -----------------------------------------------------------------------------
+# PyPI's `torch` wheel is CPU-only on Windows and (as of the pins above) CPU-only
+# by default on Linux too. Running `uv pip install torch --index-url ...` by
+# hand does NOT stick: `uv run`/`uv sync` re-resolve against pyproject.toml and
+# the lockfile on every invocation, and without a source override they silently
+# reinstall the plain PyPI (CPU) wheel over the manually-installed CUDA one --
+# which is exactly the bug this section fixes.
+#
+# `tool.uv.sources` pins torch/torchvision/torchaudio to the CUDA 12.4 index for
+# CUDA platforms only; other platforms (e.g. macOS, or a deliberate CPU-only
+# environment) fall through to the default PyPI wheel via the empty `[[]]`
+# marker below. This makes CUDA the outcome of `uv sync`, not a step you have
+# to remember and that a later `uv run` will quietly undo.
+#
+# To confirm which one landed:
+#     uv run python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+# Expect a version string ending in "+cu124" and `True`.
+#
+# If your CUDA toolkit is not 12.4, change "cu124" below to match
+# (see https://pytorch.org/get-started/locally/ for the current wheel index),
+# then re-run `uv sync`.
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu124", marker = "platform_system != 'Darwin'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu124"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true

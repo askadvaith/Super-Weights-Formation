@@ -1,0 +1,40 @@
+{
+  "name": "A2_soft_clamp",
+  "intervention": {
+    "kind": "activation_bound",
+    "scope_layers": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "start_step": 0,
+    "activation_mode": "soft",
+    "activation_threshold": 12.0,
+    "tracked_coordinates": [
+      [
+        7,
+        45,
+        25
+      ],
+      [
+        5,
+        45,
+        689
+      ],
+      [
+        6,
+        45,
+        5
+      ]
+    ]
+  }
+}

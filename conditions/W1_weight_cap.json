@@ -1,0 +1,44 @@
+{
+  "name": "W1_weight_cap",
+  "intervention": {
+    "kind": "weight_projection",
+    "scope_layers": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "start_step": 0,
+    "weight_cap": 0.35,
+    "tracked_coordinates": [
+      [
+        7,
+        45,
+        25
+      ],
+      [
+        5,
+        45,
+        689
+      ],
+      [
+        6,
+        45,
+        5
+      ],
+      [
+        10,
+        484,
+        418
+      ]
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "I1_early_inoc",
+  "intervention": {
+    "kind": "inoculation",
+    "scope_layers": [
+      7
+    ],
+    "start_step": 200,
+    "target_coordinate": [
+      7,
+      100,
+      500
+    ],
+    "tracked_coordinates": [
+      [
+        7,
+        100,
+        500
+      ],
+      [
+        7,
+        45,
+        25
+      ]
+    ],
+    "inoculation_delta_scale": 2.0,
+    "inoculation_sign": 1,
+    "state_policy": "preserve"
+  }
+}
